@@ -1,0 +1,3 @@
+[submodule "litex_coremark/coremark"]
+	path = litex_coremark/coremark
+	url = https://github.com/eembc/coremark.git

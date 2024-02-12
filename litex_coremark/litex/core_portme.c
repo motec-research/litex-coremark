@@ -17,8 +17,12 @@ Original Author: Shay Gal-on
 */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include "coremark.h"
+
+#include <generated/csr.h>
+#include <generated/soc.h>
 
 #if VALIDATION_RUN
 volatile ee_s32 seed1_volatile = 0x3415;
@@ -52,12 +56,10 @@ volatile ee_s32 seed5_volatile = 0;
    increase this value.
         */
 #define NSECS_PER_SEC              CLOCKS_PER_SEC
-#define CORETIMETYPE               clock_t
-#define GETMYTIME(_t)              (*_t = clock())
+#define CORETIMETYPE               CORE_TICKS
+#define GETMYTIME(_t)              (*_t = timer0_uptime_cycles_read())
 #define MYTIMEDIFF(fin, ini)       ((fin) - (ini))
-#define TIMER_RES_DIVIDER          1
-#define SAMPLE_TIME_IMPLEMENTATION 1
-#define EE_TICKS_PER_SEC           (NSECS_PER_SEC / TIMER_RES_DIVIDER)
+#define EE_TICKS_PER_SEC           CONFIG_CLOCK_FREQUENCY
 
 /** Define Host specific (POSIX), or target specific global time variables. */
 static CORETIMETYPE start_time_val, stop_time_val;

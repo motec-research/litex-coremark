@@ -74,7 +74,11 @@ endif
 #	Use this flag to define compiler options. Note, you can add compiler options from the command line using XCFLAGS="other flags"
 # CFLAGS based on litex/soc/software/common.mak
 
-PORT_CFLAGS := -O2 $(CPUFLAGS)
+# Generate *.d Makefile dependencies fragments, include using;
+# -include $(OBJECTS:.o=.d)
+DEPFLAGS += -MD -MP
+
+PORT_CFLAGS := $(DEPFLAGS) -O2 $(CPUFLAGS)
 PORT_CFLAGS += -I$(BUILDINC_DIRECTORY)
 PORT_CFLAGS += -I$(BUILDINC_DIRECTORY)/../libc
 PORT_CFLAGS += -I$(CPU_DIRECTORY)
@@ -100,6 +104,12 @@ OFLAG 	= -o
 # 	Port specific source files can be added here
 PORT_SRCS = core_portme.c crt0.S
 PORT_OBJS = $(addsuffix .o,$(basename $(PORT_SRCS)))
+
+# pull in dependency info for *existing* .o files
+-include $(OBJS:.o=.d)
+
+# depend of generated files
+$(OUTFILE): $(addprefix $(SOFTWARE_DIR)/include/generated, output_format.ld regions.ld)
 
 VPATH = $(PORT_DIR):$(CPU_DIRECTORY)
 

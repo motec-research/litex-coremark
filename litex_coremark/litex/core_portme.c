@@ -77,6 +77,8 @@ static CORETIMETYPE start_time_val, stop_time_val;
 void
 start_time(void)
 {
+    static int test = 0;
+    ee_printf("test %d...", ++test);
     GETMYTIME(&start_time_val);
 }
 /* Function : stop_time
@@ -91,6 +93,7 @@ void
 stop_time(void)
 {
     GETMYTIME(&stop_time_val);
+    ee_printf("done\n");
 }
 /* Function : get_time
         Return an abstract "ticks" number that signifies time on the system.

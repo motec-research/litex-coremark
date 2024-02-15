@@ -23,6 +23,8 @@ Original Author: Shay Gal-on
 
 #include <generated/csr.h>
 #include <generated/soc.h>
+#include <irq.h>
+#include <libbase/uart.h>
 
 #if VALIDATION_RUN
 volatile ee_s32 seed1_volatile = 0x3415;
@@ -57,7 +59,7 @@ volatile ee_s32 seed5_volatile = 0;
         */
 #define NSECS_PER_SEC              CLOCKS_PER_SEC
 #define CORETIMETYPE               CORE_TICKS
-#define GETMYTIME(_t)              (*_t = timer0_uptime_cycles_read())
+#define GETMYTIME(_t)              (timer0_uptime_latch_write(0), *_t = timer0_uptime_cycles_read())
 #define MYTIMEDIFF(fin, ini)       ((fin) - (ini))
 #define EE_TICKS_PER_SEC           CONFIG_CLOCK_FREQUENCY
 
@@ -132,6 +134,16 @@ portable_init(core_portable *p, int *argc, char *argv[])
 
     (void)argc; // prevent unused warning
     (void)argv; // prevent unused warning
+
+#ifdef CONFIG_CPU_HAS_INTERRUPT
+	irq_setmask(0);
+	irq_setie(1);
+#endif
+#ifdef CSR_UART_BASE
+	uart_init();
+#endif
+
+	ee_printf(" coremark built on "__DATE__" "__TIME__"\n");
 
     if (sizeof(ee_ptr_int) != sizeof(ee_u8 *))
     {

@@ -15,7 +15,7 @@ endif
 
 .PHONY : $(OPATH)coremark.elf
 $(OPATH)coremark.elf:
-	$(MAKE) -C $(MK_DIR)/coremark PORT_DIR=$(MK_DIR)/litex OPATH=$(OPATH) FIRMWARE_MEM=$(FIRMWARE_MEM) $@
+	$(MAKE) -C $(MK_DIR)/coremark PORT_DIR=../litex OPATH=$(OPATH) FIRMWARE_MEM=$(FIRMWARE_MEM) $@
 
 include ../include/generated/variables.mak
 include $(SOC_DIRECTORY)/software/common.mak

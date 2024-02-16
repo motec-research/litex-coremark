@@ -18,7 +18,7 @@ SECTIONS
 
 		*(.text .stub .text.* .gnu.linkonce.t.*)
 		_etext = .;
-	} > main_ram
+	} > xip
 
 	.rodata :
 	{
@@ -28,7 +28,7 @@ SECTIONS
 		*(.rodata1)
 		. = ALIGN(8);
 		_erodata = .;
-	} > main_ram
+	} > xip
 
 	.data :
 	{
@@ -40,7 +40,7 @@ SECTIONS
 		*(.sdata .sdata.* .gnu.linkonce.s.*)
 		. = ALIGN(8);
 		_edata = .;
-	} > main_ram AT > main_ram
+	} > main_ram AT > xip
 
 	.bss :
 	{

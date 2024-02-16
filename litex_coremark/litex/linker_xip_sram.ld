@@ -18,7 +18,7 @@ SECTIONS
 
 		*(.text .stub .text.* .gnu.linkonce.t.*)
 		_etext = .;
-	} > main_ram
+	} > xip
 
 	.rodata :
 	{
@@ -28,7 +28,7 @@ SECTIONS
 		*(.rodata1)
 		. = ALIGN(8);
 		_erodata = .;
-	} > main_ram
+	} > xip
 
 	.data :
 	{
@@ -40,7 +40,7 @@ SECTIONS
 		*(.sdata .sdata.* .gnu.linkonce.s.*)
 		. = ALIGN(8);
 		_edata = .;
-	} > main_ram AT > main_ram
+	} > sram AT > xip
 
 	.bss :
 	{
@@ -55,10 +55,10 @@ SECTIONS
 		. = ALIGN(8);
 		_ebss = .;
 		_end = .;
-	} > main_ram
+	} > sram
 }
 
-PROVIDE(_fstack = ORIGIN(main_ram) + LENGTH(main_ram));
+PROVIDE(_fstack = ORIGIN(sram) + LENGTH(sram));
 
 PROVIDE(_fdata_rom = LOADADDR(.data));
 PROVIDE(_edata_rom = LOADADDR(.data) + SIZEOF(.data));

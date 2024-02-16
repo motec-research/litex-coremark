@@ -85,13 +85,13 @@ PORT_CFLAGS += -I$(CPU_DIRECTORY)
 PORT_CFLAGS += -I$(SOC_DIRECTORY)/software
 PORT_CFLAGS += -I$(SOC_DIRECTORY)/software/include
 
-FLAGS_STR = "$(PORT_CFLAGS) $(XCFLAGS) $(XLFLAGS) $(LFLAGS_END)"
+FLAGS_STR = "mem:$(COREMARK_MEM) $(PORT_CFLAGS) $(XCFLAGS) $(XLFLAGS) $(LFLAGS_END)"
 CFLAGS = $(PORT_CFLAGS) -I$(PORT_DIR) -I. -DFLAGS_STR=\"$(FLAGS_STR)\"
 
 #Flag : LFLAGS_END
 #	Define any libraries needed for linking or other flags that should come at the end of the link line (e.g. linker scripts). 
 #	Note : On certain platforms, the default clock_gettime implementation is supported but requires linking of librt.
-LFLAGS_END = -L$(SOFTWARE_DIR)/include -T ../litex/linker_$(FIRMWARE_MEM).ld
+LFLAGS_END = -L$(SOFTWARE_DIR)/include -T ../litex/linker_$(COREMARK_MEM).ld
 LFLAGS_END += $(PACKAGES:%=-L$(SOFTWARE_DIR)/%) $(LIBS:lib%=-l%)
 
 # Flag : SEPARATE_COMPILE

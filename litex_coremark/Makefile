@@ -1,21 +1,29 @@
 # location of this Makefile
 MK_DIR := $(realpath $(dir $(firstword $(MAKEFILE_LIST))))
-OPATH := $(shell pwd)/
+BUILD_DIR := $(shell pwd)/
 
-# main_ram or rom
-FIRMWARE_MEM?= main_ram
+# default to known workinmg configuration
+COREMARK_MEM?= rom_sram
+OPATH := $(BUILD_DIR)$(COREMARK_MEM)/
 
-all: $(OPATH)coremark.bin
+COREMARK_ELF = $(OPATH)coremark.elf
+COREMARK_BIN = $(BUILD_DIR)coremark.bin
+all: $(COREMARK_BIN)
 
-$(OPATH)%.bin: $(OPATH)%.elf
+$(COREMARK_BIN): $(COREMARK_ELF)
 	$(OBJCOPY) -O binary $< $@
 ifneq ($(OS),Windows_NT)
 	chmod -x $@
 endif
 
-.PHONY : $(OPATH)coremark.elf
-$(OPATH)coremark.elf:
-	$(MAKE) -C $(MK_DIR)/coremark PORT_DIR=../litex OPATH=$(OPATH) FIRMWARE_MEM=$(FIRMWARE_MEM) $@
+MAKE_VARS := SOFTWARE_DIR=$(BUILD_DIR)/..
+MAKE_VARS += PORT_DIR=../litex
+MAKE_VARS += OPATH=$(OPATH)
+MAKE_VARS += COREMARK_MEM=$(COREMARK_MEM)
+
+.PHONY : $(COREMARK_ELF)
+$(COREMARK_ELF):
+	$(MAKE) -C $(MK_DIR)/coremark $(MAKE_VARS) $@
 
 include ../include/generated/variables.mak
 include $(SOC_DIRECTORY)/software/common.mak

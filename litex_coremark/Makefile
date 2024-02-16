@@ -23,7 +23,7 @@ MAKE_VARS += COREMARK_MEM=$(COREMARK_MEM)
 
 .PHONY : $(COREMARK_ELF)
 $(COREMARK_ELF):
-	$(MAKE) -C $(MK_DIR)/coremark $(MAKE_VARS) $@
+	@$(MAKE) -C $(MK_DIR)/coremark $(MAKE_VARS) $@
 
 include ../include/generated/variables.mak
 include $(SOC_DIRECTORY)/software/common.mak

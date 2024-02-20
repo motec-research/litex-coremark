@@ -87,7 +87,7 @@ PORT_CFLAGS += -I$(CPU_DIRECTORY)
 PORT_CFLAGS += -I$(SOC_DIRECTORY)/software
 PORT_CFLAGS += -I$(SOC_DIRECTORY)/software/include
 
-CFLAGS = $(PORT_CFLAGS) -I$(PORT_DIR) -I. -DFLAGS_STR=\"$(FLAGS_STR)\"
+CFLAGS = $(PORT_CFLAGS) -I$(PORT_DIR) -I. -DFLAGS_STR=\"$(FLAGS_STR)\" -DMEM_METHOD=$(MEM_METHOD) -DMEM_LOCATION=\"$(MEM_LOCATION)\"
 
 #Flag : LFLAGS_END
 #	Define any libraries needed for linking or other flags that should come at the end of the link line (e.g. linker scripts). 
